@@ -9,7 +9,7 @@ target_sources(RGSSAD-dec PRIVATE ${SRC_FILES})
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "MSVC")
     target_compile_options(RGSSAD-dec PUBLIC "/std:c++latest")
 else()
-    target_compile_options(RGSSAD-dec PUBLIC "-std=c++14")
+    target_compile_options(RGSSAD-dec PUBLIC "-std=c++17")
 endif()
 
 target_include_directories(RGSSAD-dec PUBLIC include)

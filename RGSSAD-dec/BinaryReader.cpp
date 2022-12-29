@@ -1,7 +1,10 @@
+//  SPDX-FileCopyrightText: 2023 Victor Shilin <chrono.monochrome@gmail.com>
+//  SPDX-License-Identifier: MIT
+
 #include <BinaryReader.hpp>
 
 namespace rgssad {
-	
+
 using namespace std;
 
 BinaryReader::BinaryReader(string fileName)
@@ -10,10 +13,10 @@ BinaryReader::BinaryReader(string fileName)
 	if (mIfs.is_open())
 	{
 		mIfs.seekg(0, ios_base::end);
-		mFileSize = mIfs.tellg();
+		mBinSize = mIfs.tellg();
 		mIfs.seekg(0, ios_base::beg);
 	}
-	//cout << "file" << fileName << " is ok: " << mFileSize << " bytes" << endl;
+	cout << "file " << fileName << " opened ok: " << mBinSize << " bytes" << endl;
 }
 
 BinaryReader::~BinaryReader()
@@ -25,25 +28,29 @@ uint32_t BinaryReader::readUint32()
 {
 	uint32_t buf;
 	mIfs.read(reinterpret_cast<char *>(&buf), sizeof(uint32_t));
-	
+
 	return buf;
 }
 
-char *BinaryReader::read(size_t length)
+void BinaryReader::read(vector<char> &buffer, size_t length)
 {
-	mBuffer.reserve(length);
-	mIfs.read(&mBuffer[0], length);
-	return mBuffer.data();
+	buffer.reserve(length);
+	mIfs.read(&buffer[0], length);
 }
 
-void BinaryReader::seek(streamoff off)
+void BinaryReader::seek(streamoff off, ios_base::seekdir way)
 {
-	mIfs.seekg(off, ios_base::beg);
+	mIfs.seekg(off, way);
 }
 
 streamoff BinaryReader::tell()
 {
 	return mIfs.tellg();
+}
+
+int BinaryReader::eof()
+{
+	return mIfs.eof();
 }
 
 }

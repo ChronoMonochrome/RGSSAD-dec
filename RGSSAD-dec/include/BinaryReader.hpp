@@ -1,3 +1,6 @@
+//  SPDX-FileCopyrightText: 2023 Victor Shilin <chrono.monochrome@gmail.com>
+//  SPDX-License-Identifier: MIT
+
 #pragma once
 
 #include <string>
@@ -14,15 +17,15 @@ class BinaryReader {
 public:
 	BinaryReader(string fileName);
 	~BinaryReader();
-	
+
 	uint32_t readUint32();
-	char *read(size_t length);
-	void seek(streamoff off);
+	void read(vector<char> &buffer, size_t length);
+	void seek(streamoff off, ios_base::seekdir way);
+	int eof();
 	streamoff tell();
 private:
 	ifstream mIfs;
-	vector<char> mBuffer;
-	size_t mFileSize;
+	size_t mBinSize;
 };
 
 }
